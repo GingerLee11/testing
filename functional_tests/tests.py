@@ -38,7 +38,6 @@ class NewVisitorTest(LiveServerTestCase):
         # This accesses the homepage
         self.browser.get(self.live_server_url)
 
-
         # This should be what the user sees in the page title
         self.assertIn('To-Do', self.browser.title)
         header_text = self.browser.find_element(By.TAG_NAME, 'h1').text
@@ -60,7 +59,6 @@ class NewVisitorTest(LiveServerTestCase):
         self.wait_for_row_in_list_table('1: Prep for Stonetop campaign')
 
         # The text box will then reappear below the first item
-
         inputbox = self.browser.find_element(By.ID, 'id_new_item')
         inputbox.send_keys("Stat monster for Stonetop")
         inputbox.send_keys(Keys.ENTER)
@@ -73,9 +71,6 @@ class NewVisitorTest(LiveServerTestCase):
         # (there will also be explanatory text as to how this is done)
 
         # User should be able to revisit the site and see the to-do list
-
-        self.fail('Finish the test!')
-
 
     def test_multiple_users_can_start_lists_at_different_urls(self):
         # Scott starts a new to-do list
@@ -116,7 +111,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotEqual(kay_list_url, scott_list_url)
 
         # Again there is no trace of Scott's list
-        page_text = self.browser.find_element('body').text
+        page_text = self.browser.find_element(By.TAG_NAME, 'body').text
         self.assertNotIn('Prep for Stonetop campaign', page_text)
         self.assertIn('Pick new move for Isra', page_text)
         
