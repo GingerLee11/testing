@@ -13,6 +13,10 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def check_for_row_in_list_table(self, row_text):
+        table = self.browser.find_element(By.ID, 'id_list_table')
+        rows = table.find_elements(By.TAG_NAME, 'tr')
+        self.assertIn(row_text, [row.text for row in rows])
 
     def test_can_start_a_list_and_retrieve_it_later(self):
 
@@ -41,14 +45,11 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
-        table = self.browser.find_element(By.ID, 'id_list_table')
-        rows = table.find_elements(By.TAG_NAME, 'tr')
-        self.assertIn('1: Prep for Stonetop campaign', [row.text for row in rows])
-
+        self.check_for_row_in_list_table('1: Prep for Stonetop campaign')
         # The text box will then reappear below the first item
 
         # The user will then enter in "Stat monster for Stonetop"
-        self.assertIn('2: Stat monster for Stonetop', [row.text for row in rows])
+        self.check_for_row_in_list_table('2: Stat monster for Stonetop')
 
         # The site will remember the user's list by generating a unique URL 
         # (there will also be explanatory text as to how this is done)
