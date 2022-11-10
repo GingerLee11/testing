@@ -3,8 +3,12 @@ from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import WebDriverException
+
 import time
 import unittest
+
+MAX_WAIT = 10
 
 
 class NewVisitorTest(LiveServerTestCase):
@@ -15,10 +19,18 @@ class NewVisitorTest(LiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def check_for_row_in_list_table(self, row_text):
-        table = self.browser.find_element(By.ID, 'id_list_table')
-        rows = table.find_elements(By.TAG_NAME, 'tr')
-        self.assertIn(row_text, [row.text for row in rows])
+    def wait_for_row_in_list_table(self, row_text):
+        start_time = time.time()
+        while True:
+            try:
+                table = self.browser.find_element(By.ID, 'id_list_table')
+                rows = table.find_elements(By.TAG_NAME, 'tr')
+                self.assertIn(row_text, [row.text for row in rows])
+                return
+            except (AssertionError, WebDriverException) as e:
+                if time.time() - start_time > MAX_WAIT:
+                    raise e
+                time.sleep(0.5)
 
     def test_can_start_a_list_and_retrieve_it_later(self):
 
@@ -45,19 +57,17 @@ class NewVisitorTest(LiveServerTestCase):
         # After hitting enter, the page updates, and now the page list
         # "1: Prep for Stonetop campaign" as an item in a to-do list table
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
+        self.wait_for_row_in_list_table('1: Prep for Stonetop campaign')
 
         # The text box will then reappear below the first item
 
         inputbox = self.browser.find_element(By.ID, 'id_new_item')
         inputbox.send_keys("Stat monster for Stonetop")
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
-
 
         # The user will then enter in "Stat monster for Stonetop"
-        self.check_for_row_in_list_table('1: Prep for Stonetop campaign')
-        self.check_for_row_in_list_table('2: Stat monster for Stonetop')
+        self.wait_for_row_in_list_table('2: Stat monster for Stonetop')
+        self.wait_for_row_in_list_table('1: Prep for Stonetop campaign')
 
         # The site will remember the user's list by generating a unique URL 
         # (there will also be explanatory text as to how this is done)
