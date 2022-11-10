@@ -1,3 +1,5 @@
+from django.test import LiveServerTestCase
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -5,7 +7,7 @@ import time
 import unittest
 
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -22,7 +24,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # User can access online to-do app
         # This accesses the homepage
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
 
         # This should be what the user sees in the page title
@@ -38,17 +40,23 @@ class NewVisitorTest(unittest.TestCase):
             'Enter a to-do item'
         )
         # User will type in "Prep for Stonetop campaign"
-        inputbox.send_keys("Stat monster for Stonetop")
+        inputbox.send_keys("Prep for Stonetop campaign")
 
         # After hitting enter, the page updates, and now the page list
         # "1: Prep for Stonetop campaign" as an item in a to-do list table
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
-        self.check_for_row_in_list_table('1: Prep for Stonetop campaign')
         # The text box will then reappear below the first item
 
+        inputbox = self.browser.find_element(By.ID, 'id_new_item')
+        inputbox.send_keys("Stat monster for Stonetop")
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
+
+
         # The user will then enter in "Stat monster for Stonetop"
+        self.check_for_row_in_list_table('1: Prep for Stonetop campaign')
         self.check_for_row_in_list_table('2: Stat monster for Stonetop')
 
         # The site will remember the user's list by generating a unique URL 
@@ -57,8 +65,3 @@ class NewVisitorTest(unittest.TestCase):
         # User should be able to revisit the site and see the to-do list
 
         self.fail('Finish the test!')
-
-
-
-if __name__ == "__main__":
-    unittest.main()
