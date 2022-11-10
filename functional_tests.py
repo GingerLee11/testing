@@ -44,7 +44,8 @@ class NewVisitorTest(unittest.TestCase):
         table = self.browser.find_element(By.ID, 'id_list_table')
         rows = table.find_elements(By.TAG_NAME, 'tr')
         self.assertTrue(
-            any(row.text == '1: Prep for Stonetop campaign' for row in rows)
+            any(row.text == '1: Prep for Stonetop campaign' for row in rows), 
+            "New to-do item did not appear in table"
         )
 
         # The text box will then reappear below the first item
