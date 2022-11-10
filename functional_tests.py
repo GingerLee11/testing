@@ -34,7 +34,7 @@ class NewVisitorTest(unittest.TestCase):
             'Enter a to-do item'
         )
         # User will type in "Prep for Stonetop campaign"
-        inputbox.send_keys("Prep for Stonetop campaign")
+        inputbox.send_keys("Stat monster for Stonetop")
 
         # After hitting enter, the page updates, and now the page list
         # "1: Prep for Stonetop campaign" as an item in a to-do list table
@@ -43,14 +43,12 @@ class NewVisitorTest(unittest.TestCase):
 
         table = self.browser.find_element(By.ID, 'id_list_table')
         rows = table.find_elements(By.TAG_NAME, 'tr')
-        self.assertTrue(
-            any(row.text == '1: Prep for Stonetop campaign' for row in rows), 
-            "New to-do item did not appear in table"
-        )
+        self.assertIn('1: Prep for Stonetop campaign', [row.text for row in rows])
 
         # The text box will then reappear below the first item
 
         # The user will then enter in "Stat monster for Stonetop"
+        self.assertIn('2: Stat monster for Stonetop', [row.text for row in rows])
 
         # The site will remember the user's list by generating a unique URL 
         # (there will also be explanatory text as to how this is done)
