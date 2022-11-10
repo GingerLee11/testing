@@ -75,3 +75,48 @@ class NewVisitorTest(LiveServerTestCase):
         # User should be able to revisit the site and see the to-do list
 
         self.fail('Finish the test!')
+
+
+    def test_multiple_users_can_start_lists_at_different_urls(self):
+        # Scott starts a new to-do list
+        self.browser.get(self.live_server_url)
+        inputbox = self.browser.find_element(By.ID, 'id_new_item')
+        # User will type in "Prep for Stonetop campaign"
+        inputbox.send_keys("Prep for Stonetop campaign")
+
+        # After hitting enter, the page updates, and now the page list
+        # "1: Prep for Stonetop campaign" as an item in a to-do list table
+        inputbox.send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table('1: Prep for Stonetop campaign')
+
+        # Scott notices that his list has a unique URL
+        scott_list_url = self.browser.current_url
+        self.assertRegex(scott_list_url, '/lists/.+')
+
+        # A new user, Kay, comes along to the site
+        ## We use a new browser session to make sure that no information
+        ## of Edith's is coming through from cookies
+        self.browser.quit()
+        self.browser = webdriver.Firefox()
+
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element(By.TAG_NAME, 'body').text
+        self.assertNotIn('1: Prep for Stonetop campaign', page_text)
+        self.assertNotIn('2: Stat monster for Stonetop', page_text)
+
+        # Kay starts a new list by entering a new item.
+        inputbox = self.browser.find_element(By.ID, 'id_new_item')
+        inputbox.send_keys("Pick new move for Isra")
+        inputbox.send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table('1: Pick new move for Isra')
+
+        # Kay gets their own URL
+        kay_list_url = self.browser.current_url
+        self.assertRegex(kay_list_url, '/lists/.+')
+        self.assertNotEqual(kay_list_url, scott_list_url)
+
+        # Again there is no trace of Scott's list
+        page_text = self.browser.find_element('body').text
+        self.assertNotIn('Prep for Stonetop campaign', page_text)
+        self.assertIn('Pick new move for Isra', page_text)
+        
