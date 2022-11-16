@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 if 'DJANGO_DEBUG_FALSE' in os.environ:
     DEBUG = False
     SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
-    ALLOWED_HOSTS = [os.environn['SITENAME']]
+    ALLOWED_HOSTS = [os.environ['SITENAME']]
 else:
     DEBUG = True
     SECRET_KEY = 'django-insecure--^1_*l$t01ub+peu@jpic8y8_0+rz(j3meg+arw^5og8!ld(+6'
