@@ -37,7 +37,11 @@ else:
 
 # ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ["https://staging.testingsuperlist.online", "http://staging.testingsuperlist.online"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://staging.testingsuperlist.online", "http://staging.testingsuperlist.online"
+    "https://testingsuperlist.online", "http://testingsuperlist.online"
+
+    ]
 
 
 # Application definition
