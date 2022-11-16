@@ -1,14 +1,14 @@
 [Unit]
-Description=Gunicorn server for staging.testingsuperlist.online
+Description=Gunicorn server for DOMAIN
 
 [Service]
 Restart=on-failure
 User=akane
-WorkingDirectory=/home/akane/sites/staging.testingsuperlist.online
-EnvironmentFile=/home/akane/sites/staging.testingsuperlist.online/.env
+WorkingDirectory=/home/akane/sites/DOMAIN
+EnvironmentFile=/home/akane/sites/DOMAIN/.env
 
-ExecStart=/home/akane/sites/staging.testingsuperlist.online/virtualenv/bin/gunicorn \
-    --bind unix:/tmp/staging.testingsuperlist.online.socket \
+ExecStart=/home/akane/sites/DOMAIN/virtualenv/bin/gunicorn \
+    --bind unix:/tmp/DOMAIN.socket \
     superlists.wsgi:application
 
 [Install]
