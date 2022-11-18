@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from unittest import skip
 
-from lists.forms import ItemForm, EMTPY_ITEM_ERROR
+from lists.forms import ItemForm, EMPTY_ITEM_ERROR
 
 
 class ItemFormTest(TestCase):
@@ -22,5 +22,5 @@ class ItemFormTest(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(
             form.errors['text'],
-            [EMTPY_ITEM_ERROR]
+            [EMPTY_ITEM_ERROR]
         )
