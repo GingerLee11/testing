@@ -34,6 +34,9 @@ class ExistingListItemForm(ItemForm):
         super().__init__(*args, **kwargs)
         self.instance.list = for_list
 
+    def save(self):
+        return forms.ModelForm.save(self)
+
     def validate_unique(self):
         try:
             self.instance.validate_unique()
