@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
     <head>
@@ -32,14 +33,14 @@
                 </div>
             </div>    
         </div>
-        <script src="../static/jquery-3.6.1.min.js"></script>
-        <script src="../static/list.js"></script>
+        <script src="{% static 'jquery-3.6.1.min.js' %}"></script>
+        <script src="{% static 'list.js' %}"></script>
 
         <script>
             $(document).ready(function () {
                 window.Superlists.initialize();
             });
-            
+
         </script>
     </body>
 </html>
