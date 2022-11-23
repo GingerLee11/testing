@@ -10,6 +10,17 @@
     </head>
     <body>
         <div class="container">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <a href="/" class="navbar-brand">Superlists</a>
+                    <form action="#" method='POST' class="navbar-form navbar-right">
+                        <span>Enter email to log in:</span>
+                        <input type="text" name="email" class="form-control" />
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </nav>
+
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="text-center">
