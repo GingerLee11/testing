@@ -5,3 +5,4 @@ virtualenv
 __pycache__
 *.pyc
 *.pem.env
+.env
