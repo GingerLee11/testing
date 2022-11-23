@@ -10,6 +10,17 @@
     </head>
     <body>
         <div class="container">
+            <div class="navbar">
+                {% if user.is_authenticated %}
+                    <p>Logged in as {{ user.email }}</p>
+                    <p><a href="{% url 'logout' %}" id="id-logout">Log out</a></p>
+                {% else %}
+                    <form action="{% url 'send-login-email' %}" method="POST">
+                        Enter email to log in: <input name="email" type="text" />
+                        {% csrf_token %}
+                    </form>
+                {% endif %}
+            </div>
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="text-center">
