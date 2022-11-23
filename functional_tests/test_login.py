@@ -5,9 +5,8 @@ from selenium.webdriver.common.by import By
 
 import re
 
-from .base import FunctionalTest
+from .base import FunctionalTest, TEST_EMAIL
 
-TEST_EMAIL = 'akane@example.com'
 SUBJECT = 'Your login link for Superlists'
 
 
@@ -44,20 +43,12 @@ class LoginTest(FunctionalTest):
         self.browser.get(url)
 
         # She is logged in!
-        self.wait_for(
-            lambda: self.browser.find_element(By.LINK_TEXT, 'Log out')
-        )
-        navbar = self.browser.find_element(By.CSS_SELECTOR, '.navbar')
-        self.assertIn(TEST_EMAIL, navbar.text)
+        self.wait_to_be_logged_in(email=TEST_EMAIL)
 
         # Now she logs out
         self.browser.find_element(By.LINK_TEXT, 'Log out').click()
 
         # She is logged out
-        self.wait_for(lambda: 
-            self.browser.find_element(By.NAME, 'email')
-        )
-        navbar = self.browser.find_element(By.CSS_SELECTOR, '.navbar')
-        self.assertNotIn(TEST_EMAIL, navbar.text)
+        self.wait_to_be_logged_out(email=TEST_EMAIL)
 
     
