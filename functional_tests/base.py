@@ -6,10 +6,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 
 import time
-
 from unittest import skip
-
 import os
+
+from .server_tools import reset_database
 
 MAX_WAIT = 10
 TEST_EMAIL = 'akane@example.com'
@@ -32,9 +32,10 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
-        staging_server = os.environ.get('STAGING_SERVER')
-        if staging_server:
-            self.live_server_url = f'http://{staging_server}' 
+        self.staging_server = os.environ.get('STAGING_SERVER')
+        if self.staging_server:
+            self.live_server_url = f'http://{self.staging_server}'
+            reset_database(self.staging_server)
 
     def tearDown(self):
         self.browser.quit()
