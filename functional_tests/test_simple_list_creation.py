@@ -34,9 +34,7 @@ class NewVisitorTest(FunctionalTest):
         self.wait_for_row_in_list_table('1: Prep for Stonetop campaign')
 
         # The text box will then reappear below the first item
-        inputbox = self.get_item_input_box()
-        inputbox.send_keys("Stat monster for Stonetop")
-        inputbox.send_keys(Keys.ENTER)
+        self.add_list_item("Stat monster for Stonetop")
 
         # The user will then enter in "Stat monster for Stonetop"
         self.wait_for_row_in_list_table('2: Stat monster for Stonetop')
@@ -74,9 +72,7 @@ class NewVisitorTest(FunctionalTest):
 
         # Kay starts a new list by entering a new item.
         inputbox = self.get_item_input_box()
-        inputbox.send_keys("Pick new move for Isra")
-        inputbox.send_keys(Keys.ENTER)
-        self.wait_for_row_in_list_table('1: Pick new move for Isra')
+        self.add_list_item('Pick new move for Isra')
 
         # Kay gets their own URL
         kay_list_url = self.browser.current_url
